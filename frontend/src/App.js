@@ -16,7 +16,7 @@ class App extends Component {
     super();
     this.state = {
       message: [],
-      endpoint: "localhost:4000" // เชื่อมต่อไปยัง url ของ realtime server
+      endpoint: "https://swp-final.appspot.com/" // เชื่อมต่อไปยัง url ของ realtime server
     };
   }
 
