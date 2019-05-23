@@ -5,6 +5,7 @@ require("dotenv").config();
 server.set("view engine", "pug");
 const firebase = require("firebase-admin");
 const moment = require("moment");
+const { push } = require("./database/index");
 
 var T = new Twit({
   consumer_key: process.env.API_KEY,
@@ -15,18 +16,18 @@ var T = new Twit({
   // strictSSL: true // optional - requires SSL certificates to be valid.
 });
 
-var firebaseConfig = {
-  apiKey: "AIzaSyCE6-PAF2G9pCoapYm5ANPovtbiIjl2Mgo",
-  authDomain: "swp-final-exam-49609.firebaseapp.com",
-  databaseURL: "https://swp-final-exam-49609.firebaseio.com",
-  projectId: "swp-final-exam-49609",
-  storageBucket: "swp-final-exam-49609.appspot.com",
-  messagingSenderId: "70623787007",
-  appId: "1:70623787007:web:72446ab1245061cb"
-};
-firebase.initializeApp(firebaseConfig);
+// var firebaseConfig = {
+//   apiKey: "AIzaSyCE6-PAF2G9pCoapYm5ANPovtbiIjl2Mgo",
+//   authDomain: "swp-final-exam-49609.firebaseapp.com",
+//   databaseURL: "https://swp-final-exam-49609.firebaseio.com",
+//   projectId: "swp-final-exam-49609",
+//   storageBucket: "swp-final-exam-49609.appspot.com",
+//   messagingSenderId: "70623787007",
+//   appId: "1:70623787007:web:72446ab1245061cb"
+// };
+// firebase.initializeApp(firebaseConfig);
 
-const port = "4000";
+const port = process.env.PORT || "4000";
 
 const app = server.listen(port, () => {
   console.log("Server is listening at " + port);
@@ -49,6 +50,10 @@ io.on("connection", client => {
 //     });
 // })
 
+server.get("/", (re1, res) => {
+  res.send("hello world");
+});
+
 var stream = T.stream("statuses/filter", { track: "tradewar" });
 let data = {
   time: moment()
@@ -64,11 +69,12 @@ stream.on("tweet", async function(tweet) {
       .toISOString() !== data.time
   ) {
     console.log(data);
+    push(data);
     io.sockets.emit("new-message", data);
     data.time = moment()
       .startOf("minute")
       .toISOString();
-    data.count = 0
+    data.count = 0;
   } else {
     data.count = data.count + 1;
   }

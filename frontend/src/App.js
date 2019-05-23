@@ -9,6 +9,7 @@ import {
   Line,
   LineChart
 } from "recharts";
+import FirebaseGraph from "./FirebaseGraph";
 
 class App extends Component {
   constructor() {
@@ -35,6 +36,7 @@ class App extends Component {
 
     return (
       <div>
+        <h2>Realtime Socket</h2>
         <LineChart
           width={900}
           height={500}
@@ -63,6 +65,8 @@ class App extends Component {
             activeDot={{ r: 8 }}
           />
         </LineChart>
+        <h2>With Firebase</h2>
+        <FirebaseGraph />
       </div>
     );
   }
