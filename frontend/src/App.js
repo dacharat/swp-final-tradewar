@@ -26,7 +26,7 @@ class App extends Component {
     const socket = socketIOClient(endpoint);
     socket.on("new-message", messageNew => {
       temp.push(messageNew);
-      this.setState({ message: temp });
+      this.setState({ message: [...this.state.message, messageNew] });
     });
   };
 
@@ -40,12 +40,7 @@ class App extends Component {
         <LineChart
           width={900}
           height={500}
-          data={[
-            ...message,
-            { time: "12.02", count: 5 },
-            { time: "12.01", count: 3 },
-            { time: "12.00", count: 5 }
-          ].reverse()}
+          data={message || [{time: 'a', count: 3}, {time: 'b', count: 5}]}
           margin={{
             top: 50,
             right: 30,
