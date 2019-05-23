@@ -13,26 +13,6 @@ const apis = {
 
 firebase.initializeApp(apis);
 
-// const write = key => {
-//   firebase
-//     .database()
-//     .ref("/count")
-//     .transaction(function(post) {
-//       if (post) {
-//         if (!post[key]) {
-//           post[key] = 1;
-//         } else {
-//           post[key]++;
-//         }
-//       } else {
-//         post = {
-//           [key]: 1
-//         };
-//       }
-//       return post;
-//     });
-// };
-
 const push = value => {
   firebase
     .database()
